@@ -9,7 +9,7 @@ import { MoviePage } from "types/movie";
 function Listing(){
 
     const [pageNumber, setPageNumber] = useState(0);
-    
+
     const [page, setPage] = useState<MoviePage>({
         content: [],
         last: true,
@@ -23,18 +23,20 @@ function Listing(){
     });
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/movies?size=12&page=${pageNumber}$sort=id`)
+        axios.get(`${BASE_URL}/movies?size=12&page=${pageNumber}`)
             .then(response => {
                 const data  = response.data as MoviePage;
                 setPage(data);
             });
         }, [pageNumber]);
 
-
+    const handlePageChange = (newPageNumber : number) => {
+        setPageNumber(newPageNumber);
+    }
     return(
         <>
-        <p>{pageNumber}</p>
-        <Pagination/>
+        <Pagination page={page} onChange={handlePageChange}/>
+
             <div className="container">
                 <div className="row">
 
